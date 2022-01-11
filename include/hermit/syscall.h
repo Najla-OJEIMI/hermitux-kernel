@@ -202,6 +202,7 @@ int sys_umask(int mask);
 int sys_setsid(void);
 int sys_sync(void);
 int sys_creat(const char *path, int mode);
+int sys_rename(const char *oldpath, const char *newpath);
 int sys_fsync(int fd);
 int sys_fdatasync(int fd);
 int sys_syncfs(int fd);
@@ -261,7 +262,7 @@ syscall(int nr, unsigned long arg0, unsigned long arg1, unsigned long arg2)
 	// note: syscall stores the return address in rcx and rflags in r11
 	asm volatile ("syscall"
 		: "=a" (res)
-		: "a" (nr), "D" (arg0), "S" (arg1), "d" (arg2)
+		: "a" (nr), "D" (arg0), "S" (arg1), "d" (:arg2)
 		: "memory", "%rcx", "%r11");
 
 	return res;
